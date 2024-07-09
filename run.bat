@@ -1,0 +1,1 @@
+node C:\Users\ktdan\Desktop\internship\main.js

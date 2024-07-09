@@ -1,0 +1,53 @@
+<html>
+<body onload="ajax_users_load_list();">
+    <hr/>
+    <style>
+    .menu {
+        color           : red;
+        background-color: light grey;
+        height          :30px;
+        width           :90px;
+    }
+    </style>
+    <input type="button" class="menu" value="main"     onclick="window.location.href='http://localhost:8080/ui/main';"/>
+    <input type="button" class="menu" value="users"    onclick="window.location.href='http://localhost:8080/ui/users';"/>
+    <input type="button" class="menu" value="meetings"    onclick="window.location.href='http://localhost:8080/ui/meetings';"/>
+    <hr/>
+
+    <script>
+    function ajax_users_load_list() {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                let responseText   = this.responseText;
+                let users          = JSON.parse(responseText);
+                array_users        = users;
+                let html_table = "<table border=1>";
+                for (let user of users) {
+                    let html_user_item = "<tr><td>user.id</td><td>user.namel</td><td>user.namef</td><td>user.birth</td></tr>";
+                    html_user_item = html_user_item.replace("user.id"   , user.id);
+                    html_user_item = html_user_item.replace("user.namel", user.namel);
+                    html_user_item = html_user_item.replace("user.namef", user.namef);
+                    html_user_item = html_user_item.replace("user.birth", user.birth);
+                    html_table += html_user_item;
+                }//end for
+                html_table += "</table>";
+                document.getElementById("html_div_table_users").innerHTML = html_table;
+            }//end if
+        };
+        xhttp.open("GET", "http://localhost:8080/api/users", false);
+        xhttp.send();
+    }//end function
+    </script>
+
+    USERS <br/>
+    <div id="html_div_table_users"></div> 
+    <button type="button" onclick="ajax_users_load_list();">load users list</button><br/>
+
+
+
+
+
+</body>
+</html>
+
