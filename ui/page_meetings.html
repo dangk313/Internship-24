@@ -1,5 +1,5 @@
 <html>
-<body>
+<body onload="ajax_meetings_load_list();">
     <hr/>
     <style>
     .menu {
@@ -13,6 +13,38 @@
     <input type="button" class="menu" value="users"    onclick="window.location.href='http://localhost:8080/ui/users';"/>
     <input type="button" class="menu" value="meetings"    onclick="window.location.href='http://localhost:8080/ui/meetings';"/>
     <hr/>
-MEETINGS
+
+    <script>
+    function ajax_meetings_load_list() {
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                let responseText   = this.responseText;
+                let meetings          = JSON.parse(responseText);
+                array_meetings        = meetings;
+                let html_table = "<table border=1>";
+                for (let meeting of meetings) {
+                    let html_meeting_item = "<tr> <td>meeting.id</td> <td>meeting.id1</td> <td>meeting.id2</td> <td>meeting.name</td> <td>meeting.location</td> <td>meeting.datetime</td> </tr>";
+                    html_meeting_item = html_meeting_item.replace("meeting.id"   , meeting.id);
+                    html_meeting_item = html_meeting_item.replace("meeting.id1", meeting.id1);
+                    html_meeting_item = html_meeting_item.replace("meeting.id2", meeting.id2);
+                    html_meeting_item = html_meeting_item.replace("meeting.name", meeting.name);
+                    html_meeting_item = html_meeting_item.replace("meeting.location", meeting.location);
+                    html_meeting_item = html_meeting_item.replace("meeting.datetime", meeting.datetime);
+                    html_table += html_meeting_item;
+                }//end for
+                html_table += "</table>";
+                document.getElementById("html_div_table_users").innerHTML = html_table;
+            }//end if
+        };
+        xhttp.open("GET", "http://localhost:8080/api/meetings", false);
+        xhttp.send();
+    }//end function
+    </script>
+    
+        MEETINGS <br/>
+        <div id="html_div_table_users"></div> 
+        <button type="button" onclick="ajax_meetings_load_list();">load meetings list</button><br/>
+
 </body>
 </html>

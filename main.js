@@ -36,14 +36,19 @@ const server = http.createServer((request, response) => {
             else if (method == "GET" && url == "/ui/users"   ) {ui.page_users   (request, response);}
             else if (method == "GET" && url == "/ui/meetings"   ) {ui.page_meetings   (request, response);}
 
-            //// API USERS
+            //// API REQUESTS
             else if (url == "/api/users"    && method == "GET"   ) {api.api_users_get   (request, body, response);}
+            else if (url == "/api/users"    && method == "POST"   ) {api.api_users_post   (request, body, response);}
+            else if (url == "/api/users"    && method == "DELETE"   ) {api.api_users_delete   (request, body, response);}
+            else if (url == "/api/users"    && method == "PUT"   ) {api.api_users_put   (request, body, response);}
+            else if (url == "/api/meetings"    && method == "GET"   ) {api.api_meetings_get   (request, body, response);}
+
 
             ////////////////////////////////////////////////
             //// RETURN ERROR RESPONSE
             ////////////////////////////////////////////////
             else{
-                response.write("EROR LOL");
+                response.write("ERROR LOL");
                 response.end(); //// send response
             }
         });

@@ -45,6 +45,88 @@
     <button type="button" onclick="ajax_users_load_list();">load users list</button><br/>
 
 
+    <br/><br/>
+    <input type="text" id="user_create_id"    value=""          />id<br/>
+    <input type="text" id="user_create_namel" value=""          />last name<br/>
+    <input type="text" id="user_create_namef" value=""          />first name<br/>
+    <input type="text" id="user_create_birth" value=""          />birth<br/>
+    <input type="button" onclick="ajax_user_create(); ajax_users_load_list();" value="user create" /><br/>
+
+    <script>
+        function ajax_user_create() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    
+                }//end if
+            };
+            let user = {id:null, namel:null, namef:null, birth:null};
+            user.id     = document.getElementById("user_create_id"   ).value;
+            user.namel  = document.getElementById("user_create_namel").value;
+            user.namef  = document.getElementById("user_create_namef").value;
+            user.birth  = document.getElementById("user_create_birth").value;
+            let payload = JSON.stringify(user);
+
+            xhttp.open("POST", "http://localhost:8080/api/users", false);
+            xhttp.send(payload);
+        }
+    </script>
+
+    <br/><br/>
+    <input type="text" id="user_delete_id"    value=""          />id<br/>
+    <input type="button" onclick="ajax_user_delete(); ajax_users_load_list();" value="user delete" /><br/>
+
+    <script>
+        function ajax_user_delete() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    
+                }//end if
+            };
+            let user = {id:null, namel:null, namef:null, birth:null};
+            user.id     = document.getElementById("user_delete_id"   ).value;
+            // user.namel  = document.getElementById("user_de_namel").value;
+            // user.namef  = document.getElementById("user_create_namef").value;
+            // user.birth  = document.getElementById("user_create_birth").value;
+            let payload = JSON.stringify(user);
+
+            xhttp.open("DELETE", "http://localhost:8080/api/users", false);
+            xhttp.send(payload);
+        }
+    </script>
+
+    <br/><br/>
+    <input type="text" id="user_update_id"    value=""          />id<br/>
+    <input type="text" id="user_update_namel" value=""          />last name<br/>
+    <input type="text" id="user_update_namef" value=""          />first name<br/>
+    <input type="text" id="user_update_birth" value=""          />birth<br/>
+    <input type="button" onclick="ajax_user_update(); ajax_users_load_list();" value="user update" /><br/>
+
+    <script>
+        function ajax_user_update() {
+            let xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    
+                }//end if
+            };
+            let user = {id:null, namel:null, namef:null, birth:null};
+            user.id     = document.getElementById("user_update_id"   ).value;
+            user.namel  = document.getElementById("user_update_namel").value;
+            user.namef  = document.getElementById("user_update_namef").value;
+            user.birth  = document.getElementById("user_update_birth").value;
+            let payload = JSON.stringify(user);
+
+            xhttp.open("PUT", "http://localhost:8080/api/users", false);
+            xhttp.send(payload);
+        }
+    </script>
+
+
+
+
+
 
 
 
