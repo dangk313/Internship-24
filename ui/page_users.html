@@ -219,6 +219,45 @@
     </div>
 
 
+    <input type="text" id="text1"    value=""   onchange="trim(this); validate(this);" />validate <span id="html_text1_error" style="color: red;"></span><br/>
+    <input type="text" id="text2"    value=""   onchange="sanitize(this);" />sanitize <br/>
+    <input type="date" id="date1"    value=""  onchange="testDate(this);"  />id<br/>
+
+    <script>
+        async function validate(input){
+            let value = input.value;
+            if(value.match(/[^A-Za-z]/)){
+                document.getElementById("html_text1_error").innerHTML = "Invalid Characters!!"; 
+            }else{
+                document.getElementById("html_text1_error").innerHTML = ""; 
+            }
+        }
+
+        async function sanitize(input){
+            let value = input.value;
+            let regExp = /[^A-Za-z]/g;
+            value = value.replace(regExp, "");
+            input.value = value;
+            return;
+        }
+
+        async function trim(input){
+            let value = input.value;
+            value = value.trim();
+            input.value = value;
+        }
+
+        async function testDate(input){
+            alert("value = "+ input.value); // year / month / day
+        }
+
+
+    </script>
+
+
+
+
+
 
 </body>
 </html>
