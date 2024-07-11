@@ -15,6 +15,7 @@ const api = {
         response.setHeader("Content-Type", "application/json");
         let db   = require("./db.js");
         let user = JSON.parse(body);
+        user.id = "" + Date.now();
         db.user_create(user.id, user.namel, user.namef, user.birth);
         response.write(body);
         response.statusCode = 200;

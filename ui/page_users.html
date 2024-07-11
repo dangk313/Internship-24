@@ -1,5 +1,5 @@
 <html>
-<body onload="ajax_users_load_list();">
+<body onload="ajax_users_load_list(); hide_all();">
     <hr/>
     <style>
     .menu {
@@ -15,6 +15,7 @@
     <hr/>
 
     <script>
+    var array_users = [];    
     function ajax_users_load_list() {
         let xhttp = new XMLHttpRequest();
         xhttp.onreadystatechange = function() {
@@ -24,11 +25,13 @@
                 array_users        = users;
                 let html_table = "<table border=1>";
                 for (let user of users) {
-                    let html_user_item = "<tr><td>user.id</td><td>user.namel</td><td>user.namef</td><td>user.birth</td></tr>";
+                    let html_user_item = "<tr><td>user.id</td><td>user.namel</td><td>user.namef</td><td>user.birth</td><td>Button_update</td><td>Button_delete</td></tr>";
                     html_user_item = html_user_item.replace("user.id"   , user.id);
                     html_user_item = html_user_item.replace("user.namel", user.namel);
                     html_user_item = html_user_item.replace("user.namef", user.namef);
                     html_user_item = html_user_item.replace("user.birth", user.birth);
+                    html_user_item = html_user_item.replace("Button_update", create_button_update(user.id));
+                    html_user_item = html_user_item.replace("Button_delete", create_button_delete(user.id));
                     html_table += html_user_item;
                 }//end for
                 html_table += "</table>";
@@ -38,15 +41,102 @@
         xhttp.open("GET", "http://localhost:8080/api/users", false);
         xhttp.send();
     }//end function
+
+    function create_button_update(id){
+        let html = "<input type='button' value='update' onclick='action_button_update("+ id + ");'>";
+        return html;
+    }
+
+    function create_button_delete(id){
+        let html = "<input type='button' value='delete' onclick='action_button_delete("+ id + ");'>";
+        return html;
+    }
+
+    function action_button_update(id){
+        // alert("doing update " + id);
+        let user = null;
+        for(user of array_users){
+            if(user.id == id){  
+                break;
+            }
+        }
+        
+        if(user == null){
+            return;
+        }else{
+            document.getElementById("user_update_id").value = user.id;
+            document.getElementById("user_update_namel").value = user.namel;
+            document.getElementById("user_update_namef").value = user.namef;
+            document.getElementById("user_update_birth").value = user.birth;
+            hide_all();
+            show("htlm_div_user_update");
+        }
+
+    }
+
+    function action_button_delete(id){
+        // alert("doing delete " + id);
+        let user = null;
+        for(user of array_users){
+            if(user.id == id){  
+                break;
+            }
+        }
+
+        if(user == null){
+            return;
+        }else{
+            document.getElementById("user_delete_id").value = user.id;
+            hide_all();
+            show("htlm_div_user_delete");
+        }
+    }
+
+    function action_button_create(){
+        document.getElementById("user_create_id").value = "";
+        hide_all();
+        show("htlm_div_user_create");
+    }
+
+    function action_button_cancel(){
+        hide_all();
+        document.getElementById("user_create_id").value = "";
+        document.getElementById("user_create_namel").value = "";
+        document.getElementById("user_create_namef").value = "";
+        document.getElementById("user_create_birth").value = "";
+    }
+
     </script>
+
+
 
     USERS <br/>
     <div id="html_div_table_users"></div> 
     <button type="button" onclick="ajax_users_load_list();">load users list</button><br/>
+    <button type="button" onclick="action_button_create();">create user</button><br/>
+    <button type="button" onclick="action_button_cancel();">cancel</button><br/>
+    <br/><hr/><br/>
 
 
-    <br/><br/>
-    <input type="text" id="user_create_id"    value=""          />id<br/>
+    <script>
+        function hide(id){
+            document.getElementById(id).hidden = true;
+        }
+
+        function show(id){
+            document.getElementById(id).hidden = false;
+        }
+
+        function hide_all(){
+            hide("htlm_div_user_create");
+            hide("htlm_div_user_delete");
+            hide("htlm_div_user_update");
+        }
+
+    </script>
+    
+    <div id="htlm_div_user_create">
+    <input type="text" id="user_create_id"    value=""    hidden=true       />
     <input type="text" id="user_create_namel" value=""          />last name<br/>
     <input type="text" id="user_create_namef" value=""          />first name<br/>
     <input type="text" id="user_create_birth" value=""          />birth<br/>
@@ -71,9 +161,11 @@
             xhttp.send(payload);
         }
     </script>
+    </div>
 
-    <br/><br/>
-    <input type="text" id="user_delete_id"    value=""          />id<br/>
+
+    <div id="htlm_div_user_delete">
+    <input type="text" id="user_delete_id"    value=""    disabled=true       />id<br/>
     <input type="button" onclick="ajax_user_delete(); ajax_users_load_list();" value="user delete" /><br/>
 
     <script>
@@ -95,9 +187,11 @@
             xhttp.send(payload);
         }
     </script>
+    </div>
 
-    <br/><br/>
-    <input type="text" id="user_update_id"    value=""          />id<br/>
+
+    <div id="htlm_div_user_update">
+    <input type="text" id="user_update_id"    value=""  disabled=true        />id<br/>
     <input type="text" id="user_update_namel" value=""          />last name<br/>
     <input type="text" id="user_update_namef" value=""          />first name<br/>
     <input type="text" id="user_update_birth" value=""          />birth<br/>
@@ -122,11 +216,7 @@
             xhttp.send(payload);
         }
     </script>
-
-
-
-
-
+    </div>
 
 
 
